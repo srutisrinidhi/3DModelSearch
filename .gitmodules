@@ -1,0 +1,3 @@
+[submodule "LanguageBind"]
+	path = LanguageBind
+	url = https://github.com/PKU-YuanGroup/LanguageBind

@@ -1,0 +1,15 @@
+# Project dependencies for 3DModelSearch.
+#
+# NOTE: install PyTorch separately first, matched to your CUDA version, e.g.:
+#   pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 \
+#       --extra-index-url https://download.pytorch.org/whl/cu116
+# Also install LanguageBind's own requirements: pip install -r LanguageBind/requirements.txt
+
+chromadb
+gradio
+openai
+pandas
+numpy
+tqdm
+Pillow
+matplotlib
