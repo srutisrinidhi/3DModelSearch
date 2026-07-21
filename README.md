@@ -31,8 +31,9 @@ The scripts import `LanguageBind.languagebind` from the repo root, so export its
 export LANGUAGEBIND_PATH="$(pwd)"
 ```
 
-Rendering also needs [Blender](https://www.blender.org/download/) (headless) and
-[`ffmpeg`](https://ffmpeg.org/) (for video). Every script accepts `--help` for its full options.
+If you want to render your own data, you also need [Blender](https://www.blender.org/download/)
+(headless) and [`ffmpeg`](https://ffmpeg.org/) (for video). If you're using the precomputed
+downloads below, you can skip Blender/ffmpeg. Every script accepts `--help` for its full options.
 
 ## Datasets
 
@@ -88,13 +89,13 @@ With these in place you can jump straight to [Databases](#databases).
 Starting from a folder of models (`.glb` / `.gltf` / `.fbx` / `.obj`):
 
 ```bash
-# 1. Render multi-view images and a video per model
-blender --background --python scripts/Blender/render_images.py -- --input models/ --output renders/images/
-blender --background --python scripts/Blender/render_videos.py -- --input models/ --output renders/videos/
+# 1. Render multi-view images and a video per model (data/glbs/ = your folder of source models)
+blender --background --python scripts/Blender/render_images.py -- --input data/glbs/ --output renders/images/
+blender --background --python scripts/Blender/render_videos.py -- --input data/glbs/ --output renders/videos/
 
 # 2. Encode embeddings + build the mega CSV (out/models_data.csv)
 python scripts/generate_embeddings.py \
-    --models_dir models/ --images_dir renders/images/ --videos_dir renders/videos/ --output_dir out/
+    --models_dir data/glbs/ --images_dir renders/images/ --videos_dir renders/videos/ --output_dir out/
 
 # 3. Train the multi-view fusion model used by the main database
 python scripts/multimodal_models/train_multiview_image_mlp.py \
@@ -107,6 +108,10 @@ python scripts/create_model_database.py \
 
 # 5. Retrieve (text / image / video, auto-detected) — prints model paths
 python scripts/main.py --query "a red sports car" \
+    --models_csv out/models_data.csv --persist_directory databases/model_database
+
+# 6. Or launch the interactive web demo
+python scripts/gradio_viewer.py \
     --models_csv out/models_data.csv --persist_directory databases/model_database
 ```
 
