@@ -36,8 +36,9 @@ from tqdm import tqdm
 
 SUPPORTED_EXTS = (".glb", ".gltf", ".fbx", ".obj")
 
-# Resolved once in main(): the device ("cuda" or "cpu") and the HF cache dir.
-_DEVICE = "cpu"
+# Device / HF cache dir. Auto-detect CUDA so callers that don't run _configure()
+# (e.g. retrieval.py, the DB scripts) still use the GPU when available.
+_DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 _CACHE_DIR = "./cache_dir"
 
 # Lazy singletons so each LanguageBind model + processor is loaded exactly once.
@@ -49,15 +50,24 @@ _VIDEO_MODEL = None
 # LanguageBind setup
 # ---------------------------------------------------------------------------
 
+def _add_languagebind_to_path(languagebind_path=None):
+    """Put the LanguageBind checkout on sys.path (honors LANGUAGEBIND_PATH env var)."""
+    lb_path = languagebind_path or os.environ.get("LANGUAGEBIND_PATH")
+    if lb_path and lb_path not in sys.path:
+        sys.path.append(lb_path)
+
+
+# Run at import time so ANY caller (retrieval, DB scripts, trainers) can import
+# LanguageBind without first calling _configure().
+_add_languagebind_to_path()
+
+
 def _configure(device=None, cache_dir="./cache_dir", languagebind_path=None):
     """Set the global device / cache dir and make LanguageBind importable."""
     global _DEVICE, _CACHE_DIR
     _CACHE_DIR = cache_dir
     _DEVICE = device or ("cuda" if torch.cuda.is_available() else "cpu")
-
-    lb_path = languagebind_path or os.environ.get("LANGUAGEBIND_PATH")
-    if lb_path:
-        sys.path.append(lb_path)
+    _add_languagebind_to_path(languagebind_path)
 
 
 def _load_image_model():

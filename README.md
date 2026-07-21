@@ -18,17 +18,23 @@ conda create -n ModelSearch python=3.9 -y
 conda activate ModelSearch
 
 # PyTorch (match the CUDA build to your machine)
-pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 \
+python -m pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 \
     --extra-index-url https://download.pytorch.org/whl/cu116
 
-pip install -r LanguageBind/requirements.txt   # LanguageBind deps
-pip install -r requirements.txt                # this project's deps
+python -m pip install -r LanguageBind/requirements.txt   # LanguageBind deps
+python -m pip install -r requirements.txt                # this project's deps
 ```
 
-The scripts import `LanguageBind.languagebind` from the repo root, so export its location:
+> Use `python -m pip` (not bare `pip`) so packages install into the active `ModelSearch` env
+> rather than a system/`--user` Python. Verify with
+> `python -c "import torch, chromadb, pandas, gradio; print('ok')"`.
+
+The scripts import `LanguageBind.languagebind`, so point `LANGUAGEBIND_PATH` at the **repo root**
+(the directory that *contains* `LanguageBind/`, not the `LanguageBind/` folder itself). Run this
+from the repo root:
 
 ```bash
-export LANGUAGEBIND_PATH="$(pwd)"
+export LANGUAGEBIND_PATH="$(pwd)"   # e.g. /path/to/3DModelSearch  (NOT .../3DModelSearch/LanguageBind)
 ```
 
 If you want to render your own data, you also need [Blender](https://www.blender.org/download/)
@@ -39,8 +45,8 @@ downloads below, you can skip Blender/ffmpeg. Every script accepts `--help` for 
 
 The pipeline works on any folder of `.glb` / `.gltf` / `.fbx` / `.obj` models. The paper uses:
 
-- **Objaverse** — via the [`objaverse`](https://pypi.org/project/objaverse/) package (objects
-  download to `~/.objaverse`):
+- **Objaverse** — install the [`objaverse`](https://pypi.org/project/objaverse/) package
+  (`python -m pip install objaverse`), then download objects (they land in `~/.objaverse`):
   ```python
   import objaverse
   uids = objaverse.load_uids()
@@ -58,7 +64,7 @@ Renders, embeddings, and trained checkpoints are hosted on Hugging Face:
 rendering/embedding/training and extract at the repo root:
 
 ```bash
-pip install huggingface_hub
+python -m pip install huggingface_hub
 REPO=srutisrinidhi/3DModelSearch
 
 # renders + embeddings
