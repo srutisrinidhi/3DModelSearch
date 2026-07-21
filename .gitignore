@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Secrets / local config
+.env
+
+# Generated pipeline artifacts (regenerate with the scripts; don't commit)
+data/
+renders/
+out/
+databases/
+cache_dir/
+.cache/
+
+# Trained checkpoints and embedding tensors (distribute via releases if needed)
+*.pt
+
+# OS junk
+.DS_Store
