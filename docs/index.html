@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Visual and Motion Aware 3D Model Representations for Semantic Retrieval</title>
+    <meta name="description" content="A visual and motion aware 3D model retrieval method that represents each model through multiview renders and short animations, enabling retrieval from text, images, and videos.">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #222;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding-bottom: 60px;
+        }
+        .header, .abstract, .image, .video {
+            text-align: center;
+        }
+        .authors {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 720px;
+            margin: auto;
+        }
+        .author {
+            margin-bottom: 20px;
+        }
+        .author b {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .author small {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: black;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 0 10px 10px 0;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #333;
+        }
+        .image img, .image video, .abstract, .video iframe {
+            width: 70%;
+            max-width: 70%;
+        }
+        .video iframe {
+            aspect-ratio: 16 / 9;
+            height: auto;
+        }
+        .image img.small {
+            width: 45%;
+        }
+        .caption {
+            width: 70%;
+            margin: 10px auto 0;
+            font-size: 14px;
+            color: #555;
+            text-align: justify;
+        }
+        .spacing {
+            margin-top: 40px;
+        }
+        .abstract {
+            text-align: justify;
+            margin: auto;
+            padding: 0 20px;
+        }
+        .abstract h3 {
+            text-align: center;
+        }
+
+        /* Headline numbers */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            width: 80%;
+            margin: auto;
+        }
+        .stat {
+            flex: 1 1 160px;
+            max-width: 200px;
+            border: 2px solid black;
+            padding: 14px 10px;
+            font-size: 14px;
+        }
+        .stat b {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        pre {
+            text-align: left;
+            background: #f4f4f4;
+            padding: 16px;
+            width: 70%;
+            margin: auto;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .container { width: 95%; }
+            .image img, .image img.small, .image video, .video iframe, .abstract, .caption, .stats, pre {
+                width: 100%; max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Learning Visual and Motion Aware 3D Model Representations for Semantic Retrieval</h1>
+            <!-- TODO: confirm venue before publishing -->
+            <h4>IEEE TVCG (ISMAR '26)</h4>
+        </div>
+
+        <div class="authors spacing">
+            <div class="author">
+                <b><a href="https://srutisrinidhi.com">Sruti Srinidhi</a></b>
+                <small>Carnegie Mellon University</small>
+            </div>
+            <div class="author">
+                <b><a href="https://users.ece.cmu.edu/~agr/">Anthony Rowe</a></b>
+                <small>Carnegie Mellon University<br>Bosch Research</small>
+            </div>
+        </div>
+
+        <div class="buttons spacing">
+            <a href="assets/Paper_3DModelSearch.pdf" class="button" target="_blank">Paper</a>
+            <a href="https://github.com/srutisrinidhi/3DModelSearch" class="button">Code</a>
+            <a href="https://huggingface.co/datasets/srutisrinidhi/3DModelSearch" class="button">Dataset</a>
+            <a href="https://youtu.be/39dVRza82f4" class="button">Video</a>
+        </div>
+
+        <div class="image spacing">
+            <video src="assets/search_results_video.mp4" autoplay muted loop playsinline></video>
+        </div>
+
+        <div class="image spacing">
+            <img src="assets/Model_search_main_figure.png" alt="Examples of 3D models retrieved from text, image, and video prompts" />
+            <p class="caption">
+                3D models retrieved for text, image, and video prompts, including ones that describe motion,
+                like "a wooden desk that is retractable" or a video of a person running.
+            </p>
+        </div>
+
+        <div class="abstract spacing">
+            <h3>Abstract</h3>
+            <p>
+                Virtual Reality (VR) content creators today face lengthy trial-and-error cycles when searching for
+                3D models, which relies heavily on manually annotated metadata. However, this approach struggles to
+                capture the rich visual and dynamic details inherent to 3D models. Prior work has attempted to address
+                this by rendering models as sets of images, but has largely remained restricted to category-level
+                search and static geometry. In VR environments where asset behavior is often as important as
+                appearance, we present a visual and motion aware 3D retrieval method that represents each model
+                through multiview renders and short animations, extending search beyond static geometry to include
+                dynamic behaviors. Pretrained image–text and video–text encoders extract features that are combined
+                into a unified embedding by training a lightweight multimodal fusion model. This enables 3D model
+                retrieval from text, images, and videos without requiring abundant and detailed ground truth data,
+                supporting more nuanced and semantically meaningful search. On text queries referencing both
+                appearance and motion, our method achieves a 23-percentage-point improvement in top-5 retrieval
+                accuracy on the Objaverse dataset, while also attaining competitive accuracy on the ModelNet40 dataset
+                and maintaining robustness as the model library size scales. A user study further shows that
+                participants strongly preferred our retrievals compared to the one used by Sketchfab, one of today's
+                most widely used 3D repositories. To support future work, we release 26k multi-view renders,
+                animation clips, and 500 manually annotated visual and motion aware captions for the Objaverse dataset.
+            </p>
+        </div>
+
+        <div class="spacing">
+            <div class="stats">
+                <div class="stat"><b>87.3%</b>Top-5 accuracy on Objaverse</div>
+                <div class="stat"><b>+23 pts</b>Top-5 over the next best prior work</div>
+                <div class="stat"><b>57%</b>of Top-5 accuracy retained at 26k models</div>
+                <div class="stat"><b>3.96 vs 1.72</b>Motion relevance vs. Sketchfab (out of 5)</div>
+            </div>
+        </div>
+
+        <div class="image spacing">
+            <h2>How It Works</h2>
+            <img src="assets/architecture.png" alt="Multiview images and an animation video of a 3D model are encoded by frozen pre-aligned encoders and fused into a unified embedding space shared with text prompts" />
+        </div>
+
+        <div class="abstract spacing">
+            <p>
+                Unlike images and videos on the Internet, 3D models rarely come with detailed captions, especially
+                ones that describe motion, which makes it difficult to train a dedicated 3D–text encoder. Instead, we
+                adopt a proxy strategy: each 3D model is rendered from six canonical views (&plusmn;x, &plusmn;y,
+                &plusmn;z) and as a short animation clip, and encoded with frozen, pre-aligned
+                <a href="https://github.com/PKU-YuanGroup/LanguageBind">LanguageBind</a> image and video encoders.
+                A lightweight image-fusion model, trained without any captions using cosine-similarity and
+                batch-wise contrastive self-consistency losses, pools the six view embeddings into one multiview
+                image embedding. This is then averaged with the video embedding to form the final 3D model
+                representation. Surprisingly, this simple mean outperforms a trained multimodal fusion model,
+                suggesting that the pretrained encoders are already well aligned across modalities.
+            </p>
+            <p>
+                Because the final embedding lives in the same space as the text encoder, models can be retrieved
+                directly by cosine similarity to a text, image, or video query. All embeddings are stored in a
+                <a href="https://www.trychroma.com/">ChromaDB</a> vector database, giving fast
+                nearest-neighbor search across tens of thousands of models.
+                The method is encoder-agnostic: any model with a unified image–video–text space can be swapped in.
+            </p>
+        </div>
+
+        <div class="image spacing">
+            <h2>Scaling to Larger Model Libraries</h2>
+            <img class="small" src="assets/scaling.png" alt="Top-5 retrieval accuracy retained as the model library grows from 500 to 26k models" />
+            <p class="caption">
+                Top-5 accuracy retained (relative to a 500-model library) as the library grows to 1k, 10k, and 26k
+                models. Baselines such as OpenShape and ULIP drop sharply, while our method retains 57% of its top-5
+                accuracy at 26k candidates.
+            </p>
+        </div>
+
+        <div class="image spacing">
+            <h2>Granularity Stress Test</h2>
+            <img src="assets/granularity_test.png" alt="Relative similarity scores for three prompts over six variants of one character: punching, jumping, or standing, with a red or blue cap" />
+            <p class="caption">
+                Six variants of the same character performing three actions (punching, jumping jacks, T-pose), each
+                with a red or blue cap. Scores are row-normalized relative similarity. Action-only prompts rank both
+                matching animations on top. Prompts that combine action and color isolate the exact model. Visual
+                attributes like cap color often act as stronger anchors than the motion, since they show up in both
+                the image and the video embeddings.
+            </p>
+        </div>
+
+        <div class="video spacing">
+            <h2>Video</h2>
+            <iframe src="https://www.youtube.com/embed/39dVRza82f4" title="3DModelSearch video" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+
+        <div class="abstract spacing">
+            <h3>Dataset</h3>
+            <p>
+                We release six canonical multiview renders and a 6-second animation clip for over 26,000
+                <a href="https://objaverse.allenai.org/">Objaverse</a> models. To our knowledge, this is the first
+                large-scale release of rendered videos for 3D models. We also release a benchmark of 500 manually
+                annotated captions that describe both appearance and motion, plus the Blender rendering pipelines
+                used to make the dataset. Everything is available on
+                <a href="https://huggingface.co/datasets/srutisrinidhi/3DModelSearch">Hugging Face</a>, and the code is
+                on <a href="https://github.com/srutisrinidhi/3DModelSearch">GitHub</a>.
+            </p>
+        </div>
+
+        <div class="spacing">
+            <h2>Try It</h2>
+            <pre><code>git clone --recurse-submodules https://github.com/srutisrinidhi/3DModelSearch
+cd 3DModelSearch
+export LANGUAGEBIND_PATH="$(pwd)"
+
+python scripts/main.py --query "a red sports car" \
+    --models_csv out/models_data.csv --persist_directory databases/model_database</code></pre>
+            <p>See the <a href="https://github.com/srutisrinidhi/3DModelSearch#readme">README</a> for full setup, precomputed downloads, and the interactive Gradio demo.</p>
+        </div>
+
+        <!-- TODO: fill in venue details / DOI once published, then uncomment
+        <div class="spacing">
+            <h3>Citation</h3>
+            <pre><code>@article{srinidhi2026visual,
+  title   = {Learning Visual and Motion Aware 3D Model Representations for Semantic Retrieval},
+  author  = {Srinidhi, Sruti and Rowe, Anthony},
+  journal = {IEEE Transactions on Visualization and Computer Graphics},
+  year    = {2026}
+}</code></pre>
+        </div>
+        -->
+
+        <div class="abstract spacing">
+            <h3>Acknowledgments</h3>
+            <p>
+                This work was supported by the NSF under award CNS-1956095 and Bosch Research.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
