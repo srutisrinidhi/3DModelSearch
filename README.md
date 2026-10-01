@@ -1,4 +1,4 @@
-# 3DModelSearch
+# Learning Visual and Motion Aware 3D Model Representations for Semantic Retrieval
 
 Embeddings-based retrieval of 3D models. Each model is rendered to multi-view images and a
 video, encoded into [LanguageBind](https://github.com/PKU-YuanGroup/LanguageBind) embeddings,
